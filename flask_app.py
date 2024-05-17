@@ -13,7 +13,6 @@ data = pd.read_csv('Crop_Recommendation.csv')
 feature_columns = ['Nitrogen', 'Phosphorus', 'Potassium', 'Temperature', 'Humidity', 'pH_Value', 'Rainfall']
 X = data[feature_columns]
 y = data['Crop']
-label_encoder = LabelEncoder()
 
 # Standardize the features
 scaler = StandardScaler()
