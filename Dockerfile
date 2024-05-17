@@ -5,6 +5,8 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+COPY Crop_Recommendation.csv .
+
 COPY flask_app.py .
 
 EXPOSE 5000
