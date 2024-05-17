@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import numpy as np
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestClassifier
 
 app = Flask(__name__)
@@ -14,14 +14,13 @@ feature_columns = ['Nitrogen', 'Phosphorus', 'Potassium', 'Temperature', 'Humidi
 X = data[feature_columns]
 y = data['Crop']
 label_encoder = LabelEncoder()
-y_encoded = label_encoder.fit_transform(y)
 
 # Standardize the features
 scaler = StandardScaler()
 X = scaler.fit_transform(X)
 # Initialize the Random Forest Classifier
 model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(X, y_encoded)
+model.fit(X, y)
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -30,13 +29,11 @@ def predict():
     features_df = pd.DataFrame([features], columns=feature_columns)
     
     features_scaled = scaler.transform(features_df)
-    prediction_encoded = model.predict(features_scaled)
-    prediction = label_encoder.inverse_transform(prediction_encoded)
+    prediction = model.predict(features_scaled)
     
     # Return the prediction as a JSON response
-    return jsonify({'prediction': int(prediction[0])})
-
+    return jsonify({'prediction': prediction[0]})
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5002)
+    app.run(host='0.0.0.0', port=5000)
