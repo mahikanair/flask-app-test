@@ -5,7 +5,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY Crop_Recommendation.csv .
+COPY random_forest_model.joblib .
 
 COPY flask_app.py .
 
